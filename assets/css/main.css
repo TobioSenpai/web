@@ -46,6 +46,29 @@ blockquote, q {
 		content: none;
 	}
 
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px; /* Чуть выше */
+  right: 80px; /* Сдвигаем левее */
+  width: 80px; /* Увеличиваем размер */
+  height: 80px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 48px; /* Увеличиваем размер стрелки */
+  text-align: center;
+  line-height: 80px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  transition: opacity 0.3s, transform 0.2s;
+}
+
+.scroll-to-top:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1); /* Чуть увеличиваем при наведении */
+}
+
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
