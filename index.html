@@ -142,25 +142,32 @@
     </script>
 
     <!-- JavaScript для загрузки текста рассказов -->
-    <script>
-      function loadStory(storyId) {
-        fetch('stories.json') // Подгружаем файл stories.json
-          .then(response => response.json()) // Преобразуем в объект JSON
-          .then(data => {
-            // Загружаем текст из JSON в соответствующий div
-            const storyText = data[storyId].replace(/\n/g, '</p><p>'); // Заменяем \n на </p><p> для создания абзацев
-            document.getElementById(storyId).innerHTML = `
-              <span class="close-btn" onclick="closeStory('${storyId}')">X</span>
-              <p>${storyText}</p>
-            `;
-            document.getElementById(storyId).style.display = 'block';
-          })
-          .catch(error => console.error('Ошибка загрузки текста:', error));
-      }
+   <script>
+  function loadStory(storyId) {
+    const storyElement = document.getElementById(storyId);
+    
+    // Если рассказ уже открыт, закрыть его
+    if (storyElement.style.display === 'block') {
+      closeStory(storyId);
+    } else {
+      // Если рассказ закрыт, открыть его и загрузить текст
+      fetch('stories.json') // Подгружаем файл stories.json
+        .then(response => response.json()) // Преобразуем в объект JSON
+        .then(data => {
+          const storyText = data[storyId].replace(/\n/g, '</p><p>'); // Заменяем \n на </p><p> для создания абзацев
+          storyElement.innerHTML = `
+            <span class="close-btn" onclick="closeStory('${storyId}')">X</span>
+            <p>${storyText}</p>
+          `;
+          storyElement.style.display = 'block';
+        })
+        .catch(error => console.error('Ошибка загрузки текста:', error));
+    }
+  }
 
-      function closeStory(storyId) {
-        document.getElementById(storyId).style.display = 'none';
-      }
-    </script>
+  function closeStory(storyId) {
+    document.getElementById(storyId).style.display = 'none';
+  }
+</script>
   </body>
 </html>
