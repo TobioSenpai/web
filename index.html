@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DENKOSEKKA | website</title>
+    <link rel="icon" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fc2%2F7c%2Fa4%2Fc27ca4af2389ef92a7cc7cfbe1727c37.jpg&f=1&nofb=1&ipt=b68f20b16fa80ece31e12669e80c39da953e9533953ed8476eb19527a08e56b9&ipo=images" type="image/x-icon" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    
+    <style>
+      .story-title {
+        cursor: pointer;
+        text-decoration: underline;
+        color: black; /* Начальный цвет текста */
+      }
+
+      .story-title:hover {
+        color: #007bff; /* Цвет текста при наведении */
+      }
+
+      .story-content {
+        display: none;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: auto;
+        position: relative;
+        color: black; /* Текст в story-content всегда черный */
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+      }
+
+      .jumplink {
+        pointer-events: none; /* Отключаем кликабельность */
+      }
+    </style>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper-->
+    <div id="wrapper">
+      <!-- Nav -->
+      <nav id="nav">
+        <a href="#" class="icon solid fa-home"><span>Home</span></a>
+        <a href="#stories" class="icon solid fa-book" id="stories-icon"><span>Рассказы</span></a>
+        <a href="https://soundcloud.com/user-519617928" class="icon brands fa-soundcloud" target="_blank"><span>SoundCloud</span></a>
+        <a href="https://www.tiktok.com/@cornelius.de.laust" class="icon brands fa-tiktok" target="_blank"><span>TikTok</span></a>
+      </nav>
+
+      <!-- Main -->
+      <div id="main">
+        <!-- Me -->
+        <article id="home" class="panel intro">
+          <header>
+            <h1>DENKOSEKKA</h1>
+            <p>Musician, writer, polyglot</p>
+          </header>
+          <div class="jumplink pic">
+            <img src="images/me.jpg" alt="" />
+          </div>
+        </article>
+
+        <div id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">&#8679;</div>
+        <script>
+          window.addEventListener("scroll", function () {
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+            if (window.scrollY > 3000) {
+              scrollToTopBtn.style.display = "block";
+            } else {
+              scrollToTopBtn.style.display = "none";
+            }
+          });
+
+          function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }
+        </script>
+
+        <!-- Stories -->
+        <article id="stories" class="panel">
+          <header>
+            <h2>Рассказы</h2>
+          </header>
+          <p>Мои произведения, написанные под псевдонимом Корнелиус Де Лауст, доступны для чтения здесь:</p>
+
+          <!-- Список рассказов -->
+          <div class="story-title" onclick="loadStory('story1')">Адвокат</div>
+          <div id="story1" class="story-content">
+            <span class="close-btn" onclick="closeStory('story1')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story2')">Фотографии</div>
+          <div id="story2" class="story-content">
+            <span class="close-btn" onclick="closeStory('story2')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story3')">Вечер пятницы</div>
+          <div id="story3" class="story-content">
+            <span class="close-btn" onclick="closeStory('story3')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Footer -->
+      <div id="footer">
+        <ul class="copyright">
+          <li>&copy; DENKOSEKKA</li>
+          <li id="current-year"></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- Динамическое обновление года -->
+    <script>
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+
+    <!-- JavaScript для загрузки текста рассказов -->
+    <script>
+      function loadStory(storyId) {
+        fetch('stories.json') // Подгружаем файл stories.json
+          .then(response => response.json()) // Преобразуем в объект JSON
+          .then(data => {
+            // Загружаем текст из JSON в соответствующий div
+            const storyText = data[storyId].replace(/\n/g, '</p><p>'); // Заменяем \n на </p><p> для создания абзацев
+            document.getElementById(storyId).innerHTML = `
+              <span class="close-btn" onclick="closeStory('${storyId}')">X</span>
+              <p>${storyText}</p>
+            `;
+            document.getElementById(storyId).style.display = 'block';
+          })
+          .catch(error => console.error('Ошибка загрузки текста:', error));
+      }
+
+      function closeStory(storyId) {
+        document.getElementById(storyId).style.display = 'none';
+      }
+    </script>
+  </body>
+</html>
