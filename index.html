@@ -64,7 +64,22 @@
           </a>
         </article>
 
-      
+      <div id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">&#8679;</div>
+<script>
+  window.addEventListener("scroll", function () {
+    const scrollToTopBtn = document.getElementById("scrollToTop");
+    if (window.scrollY > 3000) {
+      scrollToTopBtn.style.display = "block";
+    } else {
+      scrollToTopBtn.style.display = "none";
+    }
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+
 
         <!-- Stories -->
         <article id="stories" class="panel">
