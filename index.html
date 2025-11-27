@@ -279,25 +279,28 @@
       }
 
       /* JavaScript для загрузки стихотворений */
-      function loadPoem(poemId) {
-        const poemElement = document.getElementById(poemId);
+function loadPoem(poemId) {
+  const poemElement = document.getElementById(poemId);
 
-        if (poemElement.style.display === 'block') {
-          closePoem(poemId);
-        } else {
-          fetch('poems.json')
-            .then(response => response.json())
-            .then(data => {
-              const poemText = data[poemId].replace(/\n/g, '</p><p>');
-              poemElement.innerHTML = `
-                <span class="close-btn" onclick="closePoem('${poemId}')">X</span>
-                <p>${poemText}</p>
-              `;
-              poemElement.style.display = 'block';
-            })
-            .catch(error => console.error('Ошибка загрузки стихотворения:', error));
-        }
-      }
+  if (poemElement.style.display === 'block') {
+    closePoem(poemId);
+  } else {
+    fetch('poems.json')
+      .then(response => response.json())
+      .then(data => {
+        // Разделяем текст стихотворения на четверостишья
+        const stanzas = data[poemId];
+        const formatted = stanzas.map(stanza => `<p>${stanza}</p>`).join('');
+        poemElement.innerHTML = `
+          <span class="close-btn" onclick="closePoem('${poemId}')">X</span>
+          ${formatted}
+        `;
+        poemElement.style.display = 'block';
+      })
+      .catch(error => console.error('Ошибка загрузки стихотворения:', error));
+  }
+}
+
 
       function closePoem(poemId) {
         document.getElementById(poemId).style.display = 'none';
@@ -305,3 +308,4 @@
     </script>
   </body>
 </html>
+
