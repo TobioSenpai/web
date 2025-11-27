@@ -274,11 +274,13 @@
         }
       }
 
-      function closeStory(storyId) {
-        document.getElementById(storyId).style.display = 'none';
-      }
+function closeStory(storyId) {
+  document.getElementById(storyId).style.display = 'none';
+}
+</script>
 
-      /* JavaScript для загрузки стихотворений */
+<!-- JavaScript для загрузки стихотворений -->
+<script>
 function loadPoem(poemId) {
   const poemElement = document.getElementById(poemId);
 
@@ -290,13 +292,16 @@ function loadPoem(poemId) {
   fetch('poems.json')
     .then(response => response.json())
     .then(data => {
-      if (!data[poemId]) throw new Error('Стихотворение не найдено');
-      const stanzas = data[poemId].split('\n\n');
-      const formatted = stanzas.map(stanza => `<p>${stanza.replace(/\n/g, '<br>')}</p>`).join('');
-      poemElement.innerHTML = `
-        <span class="close-btn" onclick="closePoem('${poemId}')">X</span>
-        ${formatted}
-      `;
+      const poem = data[poemId];
+      if (!poem) throw new Error('Стихотворение не найдено');
+
+      let html = `<span class="close-btn" onclick="closePoem('${poemId}')">X</span>`;
+
+      poem.forEach(stanza => {
+        html += `<p>${stanza.join('<br>')}</p>`;
+      });
+
+      poemElement.innerHTML = html;
       poemElement.style.display = 'block';
     })
     .catch(error => console.error('Ошибка загрузки стихотворения:', error));
@@ -305,8 +310,9 @@ function loadPoem(poemId) {
 function closePoem(poemId) {
   document.getElementById(poemId).style.display = 'none';
 }
+</script>
 
-    </script>
   </body>
 </html>
+
 
