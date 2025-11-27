@@ -51,6 +51,15 @@
         color: black;
       }
 
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+      }
+
       .jumplink {
         pointer-events: none;
       }
@@ -71,7 +80,7 @@
       .soundcloud-embed {
         margin-top: 15px;
       }
-
+      
       /* Изменения для навигации - только белый текст при наведении */
       #nav a:hover span {
         background: transparent !important;
@@ -129,6 +138,56 @@
           }
         </script>
 
+        <!-- Stories -->
+        <article id="stories" class="panel">
+          <header>
+            <h2>Рассказы</h2>
+          </header>
+          <p>Мои произведения, написанные под псевдонимом Корнелиус Де Лауст, доступны для чтения здесь:</p>
+
+          <div class="story-title" onclick="loadStory('story1')">Адвокат</div>
+          <div id="story1" class="story-content">
+            <span class="close-btn" onclick="closeStory('story1')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story2')">Фотографии</div>
+          <div id="story2" class="story-content">
+            <span class="close-btn" onclick="closeStory('story2')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story3')">Вечер пятницы (Часть 1 | продолжение в разработке)</div>
+          <div id="story3" class="story-content">
+            <span class="close-btn" onclick="closeStory('story3')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story4')">Волки</div>
+          <div id="story4" class="story-content">
+            <span class="close-btn" onclick="closeStory('story4')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story5')">Что написано пером...</div>
+          <div id="story5" class="story-content">
+            <span class="close-btn" onclick="closeStory('story5')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story6')">Сказка «Хрупче стекла»</div>
+          <div id="story6" class="story-content">
+            <span class="close-btn" onclick="closeStory('story6')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+
+          <div class="story-title" onclick="loadStory('story7')">Эдемвиль</div>
+          <div id="story7" class="story-content">
+            <span class="close-btn" onclick="closeStory('story7')">X</span>
+            <p>Загрузка текста...</p>
+          </div>
+        </article>
+
         <!-- Poems -->
         <article id="poems" class="panel">
           <header>
@@ -136,21 +195,40 @@
           </header>
 
           <div class="poem-title" onclick="loadPoem('poem1')">Вчера будет лучше</div>
-          <div id="poem1" class="story-content" ondblclick="closePoem('poem1')">
+          <div id="poem1" class="story-content">
+            <span class="close-btn" onclick="closePoem('poem1')">X</span>
             <p>Загрузка текста...</p>
           </div>
 
           <div class="poem-title" onclick="loadPoem('poem2')">Моей музе</div>
-          <div id="poem2" class="story-content" ondblclick="closePoem('poem2')">
+          <div id="poem2" class="story-content">
+            <span class="close-btn" onclick="closePoem('poem2')">X</span>
             <p>Загрузка текста...</p>
           </div>
 
           <div class="poem-title" onclick="loadPoem('poem3')">Города шаги</div>
-          <div id="poem3" class="story-content" ondblclick="closePoem('poem3')">
+          <div id="poem3" class="story-content">
+            <span class="close-btn" onclick="closePoem('poem3')">X</span>
             <p>Загрузка текста...</p>
           </div>
         </article>
 
+        <!-- Audio Stories -->
+        <article id="audio" class="panel">
+          <header>
+            <h2>Аудиорассказы</h2>
+          </header>
+          <p>Мои произведения в аудиоформате:</p>
+          
+          <div class="audio-story">
+            <h3>Что написано пером...</h3>
+            <div class="soundcloud-embed">
+              <iframe width="100%" height="166" frameborder="no" 
+                      src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2068739084%3Fsecret_token%3Ds-6eR4OUYcJ3y&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false">
+              </iframe>
+            </div>
+          </div>
+        </article>
       </div>
 
       <!-- Footer -->
@@ -174,8 +252,33 @@
       document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 
-    <!-- JavaScript для загрузки стихотворений -->
+    <!-- JavaScript для загрузки текста рассказов -->
     <script>
+      function loadStory(storyId) {
+        const storyElement = document.getElementById(storyId);
+
+        if (storyElement.style.display === 'block') {
+          closeStory(storyId);
+        } else {
+          fetch('stories.json')
+            .then(response => response.json())
+            .then(data => {
+              const storyText = data[storyId].replace(/\n/g, '</p><p>');
+              storyElement.innerHTML = `
+                <span class="close-btn" onclick="closeStory('${storyId}')">X</span>
+                <p>${storyText}</p>
+              `;
+              storyElement.style.display = 'block';
+            })
+            .catch(error => console.error('Ошибка загрузки текста:', error));
+        }
+      }
+
+      function closeStory(storyId) {
+        document.getElementById(storyId).style.display = 'none';
+      }
+
+      /* JavaScript для загрузки стихотворений */
       function loadPoem(poemId) {
         const poemElement = document.getElementById(poemId);
 
@@ -185,14 +288,11 @@
           fetch('poems.json')
             .then(response => response.json())
             .then(data => {
-              // Получаем стихотворение и разделяем его на строки
-              const stanzas = data[poemId];
-              
-              // Форматируем каждое четверостишье в отдельный параграф
-              const formatted = stanzas.map(stanza => `<p>${stanza}</p>`).join('');
-              
-              // Заполняем блок стихотворения
-              poemElement.innerHTML = formatted;
+              const poemText = data[poemId].replace(/\n/g, '</p><p>');
+              poemElement.innerHTML = `
+                <span class="close-btn" onclick="closePoem('${poemId}')">X</span>
+                <p>${poemText}</p>
+              `;
               poemElement.style.display = 'block';
             })
             .catch(error => console.error('Ошибка загрузки стихотворения:', error));
