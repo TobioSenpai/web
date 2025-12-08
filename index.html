@@ -23,13 +23,19 @@
         color: #777777;
       }
 
-#audio .audio-story {
-  margin-top: 30px;
+/* ВОССТАНОВЛЕНИЕ НОРМАЛЬНОГО ВИДА ВСЕХ ПАНЕЛЕЙ */
+.panel {
+  padding: 0 !important;
 }
 
-#audio .soundcloud-embed {
-  margin-top: 15px;
+/* Intro-панель — стандартный вид */
+.panel.intro {
+  display: flex;
+  align-items: stretch;
+  padding: 3em 3em 3em 3em !important;
+  min-height: 100vh !important;
 }
+
 
       
       /* Заголовки стихов */
@@ -353,6 +359,7 @@ function closePoem(poemId) {
 
   </body>
 </html>
+
 
 
 
